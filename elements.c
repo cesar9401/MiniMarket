@@ -3,8 +3,8 @@
 #include "elements.h"
 
 // ------------------------------------------------------ Carretas
-NodeCart* createNodeCart(Cart n) {
-  NodeCart* tmp = (NodeCart*)malloc(sizeof(NodeCart));
+CartNode* createCartNode(Cart n) {
+  CartNode* tmp = (CartNode*)malloc(sizeof(CartNode));
   tmp->id = n;
   tmp->next = NULL;
 
@@ -12,7 +12,7 @@ NodeCart* createNodeCart(Cart n) {
 }
 
 void push(CartStack* stack, Cart n) {
-  NodeCart* node = createNodeCart(n);
+  CartNode* node = createCartNode(n);
   node->next = stack->root;
   stack->root = node;
   stack->actualNode++;
@@ -20,7 +20,7 @@ void push(CartStack* stack, Cart n) {
 
 Cart pop(CartStack* stack) {
   if(stack->root != NULL) {
-    NodeCart* node = stack->root;
+    CartNode* node = stack->root;
     stack->root = node->next;
     stack->actualNode--;
 
@@ -36,7 +36,7 @@ Cart pop(CartStack* stack) {
 
 void printCartStack(CartStack* stack) {
   if(stack->root != NULL) {
-    NodeCart* node = stack->root;
+    CartNode* node = stack->root;
     printf("Valores en pila:\n");
     do {
       printf("Carreta no: %d\n", node->id);
@@ -50,17 +50,17 @@ void printCartStack(CartStack* stack) {
 }
 
 // ------------------------------------------------------ Clientes
-// Crear nuevo nodo de tipo NodeWaiting
-NodeWaiting* createNodeWaitingQueue(Client client) {
-  NodeWaiting* tmp = (NodeWaiting*)malloc(sizeof(NodeWaiting));
+// Crear nuevo nodo de tipo WaitingNode
+WaitingNode* createWaitingNodeQueue(Client client) {
+  WaitingNode* tmp = (WaitingNode*)malloc(sizeof(WaitingNode));
   tmp->client = client;
   tmp->next = NULL;
   return tmp;
 }
 
-// Encolar nuevo nodo de NodeWaiting
+// Encolar nuevo nodo de WaitingNode
 void enqueue(WaitingQueue* queue, Client client) {
-  NodeWaiting* tmp = createNodeWaitingQueue(client);
+  WaitingNode* tmp = createWaitingNodeQueue(client);
   if(!queue->top) {
     queue->top = tmp;
     queue->bottom = tmp;
@@ -71,10 +71,10 @@ void enqueue(WaitingQueue* queue, Client client) {
   queue->waitingClients++;
 }
 
-// Desencolar nodo de NodeWaiting
+// Desencolar nodo de WaitingNode
 Client dequeue(WaitingQueue* queue) {
   if(queue->top) {
-    NodeWaiting* first = queue->top;
+    WaitingNode* first = queue->top;
     queue->top = first->next;
     queue->waitingClients--;
 
@@ -94,7 +94,7 @@ Client dequeue(WaitingQueue* queue) {
 
 void printWaitingQueue(WaitingQueue* queue) {
   if(queue->top) {
-    NodeWaiting* tmp = queue->top;
+    WaitingNode* tmp = queue->top;
     do {
       printf("Cliente: %d\n", tmp->client);
       tmp = tmp->next;
@@ -103,4 +103,32 @@ void printWaitingQueue(WaitingQueue* queue) {
     printf("La cola esta vacia\n");
   }
   printf("\n");
+}
+
+// ------------------------------------------------------ Compras
+// Crear nuevo nodo
+BuyersNode* createBuyersNode(Client client, Cart cart) {
+  BuyersNode* tmp = (BuyersNode*)malloc(sizeof(BuyersNode));
+  tmp->client = client;
+  tmp->cart = cart;
+  tmp->next = NULL;
+
+  return tmp;
+}
+
+// Insertar nodo al final de la lista
+void insertAfter(BuyersList* list, Client client, Cart cart) {
+  BuyersNode* tmp = createBuyersNode(client, cart);
+
+  if(!list->root) {
+    list->root = tmp;
+    tmp->next = tmp;
+  } else {
+    BuyersNode* node = list->root;
+    while(node->next != list->root) {
+      node = node->next;
+    }
+    node->next = tmp;
+    tmp->next = list->root;
+  }
 }
