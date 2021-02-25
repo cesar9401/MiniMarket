@@ -5,7 +5,8 @@
 #include "elements.h"
 
   // CartStack* stack1;
-  WaitingQueue* queue;
+  // WaitingQueue* queue;
+  BuyersList* list;
 
 int main() {
 
@@ -78,6 +79,32 @@ int main() {
 
   // free(queue);
 
+  BuyersNode* del;
+
+  list = (BuyersList*)malloc(sizeof(BuyersList));
+  insertAfter(list, 1, 1);
+  insertAfter(list, 2, 2);
+  insertAfter(list, 3, 4);
+  printBuyersList(list);
+
+  del = removeBuyer(list, 2);
+  printf("Eliminado: Cliente -> %d, Carrito -> %d\n", del->client, del->cart);
+
+  del = removeBuyer(list, 1);
+  printf("Eliminado: Cliente -> %d, Carrito -> %d\n", del->client, del->cart);
+
+  del = removeBuyer(list, 3);
+  printf("Eliminado: Cliente -> %d, Carrito -> %d\n", del->client, del->cart);
+  printBuyersList(list);
+
+  del = removeBuyer(list, 7);
+  //printf("Eliminado: Cliente -> %d, Carrito -> %d\n", del->client, del->cart);
+
+  insertAfter(list, 4, 5);
+  insertAfter(list, 5, 6);
+  insertAfter(list, 6, 7);
+
+  printBuyersList(list);
 
   return 0;
 }

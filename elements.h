@@ -80,4 +80,8 @@ BuyersNode* createBuyersNode(Client client, Cart cart);
 
 void insertAfter(BuyersList* list, Client client, Cart cart);
 
+BuyersNode* removeBuyer(BuyersList* list, Client client);
+
+void printBuyersList(BuyersList* list);
+
 #endif
