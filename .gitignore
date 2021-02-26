@@ -1,3 +1,5 @@
 # ignorar compilados
-
 *.out
+
+#ignorar sh
+*.sh

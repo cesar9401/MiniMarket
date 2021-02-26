@@ -2,7 +2,9 @@
 #include <stdlib.h>
 #include <stdio.h>
 
-#include "elements.h"
+#include "cart.h"
+#include "client.h"
+#include "buyer.h"
 
   // CartStack* stack1;
   // WaitingQueue* queue;
