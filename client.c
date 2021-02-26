@@ -11,7 +11,7 @@ WaitingNode* createWaitingNodeQueue(Client client) {
 }
 
 // Encolar nuevo nodo de WaitingNode
-void enqueue(WaitingQueue* queue, Client client) {
+void enqueueWaitingQueue(WaitingQueue* queue, Client client) {
   WaitingNode* tmp = createWaitingNodeQueue(client);
   if(!queue->top) {
     queue->top = tmp;
@@ -24,7 +24,7 @@ void enqueue(WaitingQueue* queue, Client client) {
 }
 
 // Desencolar nodo de WaitingNode
-Client dequeue(WaitingQueue* queue) {
+Client dequeueWaitingQueue(WaitingQueue* queue) {
   if(queue->top) {
     WaitingNode* first = queue->top;
     queue->top = first->next;

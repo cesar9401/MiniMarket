@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include "buyer.h"
 
+// ---------------------------------------- Lista circular simplemente enlazada de compras
 // Crear nuevo nodo
 BuyersNode* createBuyersNode(Client client, Cart cart) {
   BuyersNode* tmp = (BuyersNode*)malloc(sizeof(BuyersNode));
@@ -81,4 +82,48 @@ void printBuyersList(BuyersList* list) {
     }while(node != list->root);
     //printf("Cliente ->  %d, Carrito -> %d\n", node->client, node->cart);
   }
+}
+
+// ---------------------------------------- Cola de pagos
+// Encolar nuevo comprador a la cola de pagos
+void enqueuePaymentQueue(PaymentQueue* queue, BuyersNode* node) {
+  if(!queue->top) {
+    queue->top = node;
+    queue->bottom = node;
+  } else {
+    queue->bottom->next = node;
+    queue->bottom = node;
+  }
+  queue->count++;
+}
+
+// Desencolar nodo de PaymentQueue
+BuyersNode* dequeuePaymentQueue(PaymentQueue* queue) {
+  if(queue->top) {
+    BuyersNode* first = queue->top;
+    queue->top = first->next;
+    queue->count--;
+
+    if(!queue->top) {
+      queue->bottom = NULL;
+    }
+    return first;
+  }
+
+  return NULL;
+}
+
+// Imprimir cola de pagos
+void printPaymentQueue(PaymentQueue* queue) {
+  if(queue->top) {
+    BuyersNode* node = queue->top;
+    printf("Compradores en cola de pago\n");
+    do {
+      printf("Comprador -> %d, Carrito -> %d\n", node->client, node->cart);
+      node = node->next;
+    }while(node);
+  }else {
+    printf("La cola de pagos esta vacia\n");
+  }
+  printf("\n");
 }

@@ -25,9 +25,9 @@ typedef struct WaitingQueue {
 // Definicion de funciones
 WaitingNode* createWaitingNodeQueue(Client client);
 
-void enqueue(WaitingQueue* queue, Client client);
+void enqueueWaitingQueue(WaitingQueue* queue, Client client);
 
-Client dequeue(WaitingQueue* queue);
+Client dequeueWaitingQueue(WaitingQueue* queue);
 
 void printWaitingQueue(WaitingQueue* queue);
 

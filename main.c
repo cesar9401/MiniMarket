@@ -8,7 +8,8 @@
 
   // CartStack* stack1;
   // WaitingQueue* queue;
-  BuyersList* list;
+  // BuyersList* list;
+  PaymentQueue* queue;
 
 int main() {
 
@@ -81,32 +82,57 @@ int main() {
 
   // free(queue);
 
-  BuyersNode* del;
+  // BuyersNode* del;
 
-  list = (BuyersList*)malloc(sizeof(BuyersList));
-  insertAfter(list, 1, 1);
-  insertAfter(list, 2, 2);
-  insertAfter(list, 3, 4);
-  printBuyersList(list);
+  // list = (BuyersList*)malloc(sizeof(BuyersList));
+  // insertAfter(list, 1, 1);
+  // insertAfter(list, 2, 2);
+  // insertAfter(list, 3, 4);
+  // printBuyersList(list);
 
-  del = removeBuyer(list, 2);
-  printf("Eliminado: Cliente -> %d, Carrito -> %d\n", del->client, del->cart);
+  // del = removeBuyer(list, 2);
+  // printf("Eliminado: Cliente -> %d, Carrito -> %d\n", del->client, del->cart);
 
-  del = removeBuyer(list, 1);
-  printf("Eliminado: Cliente -> %d, Carrito -> %d\n", del->client, del->cart);
+  // del = removeBuyer(list, 1);
+  // printf("Eliminado: Cliente -> %d, Carrito -> %d\n", del->client, del->cart);
 
-  del = removeBuyer(list, 3);
-  printf("Eliminado: Cliente -> %d, Carrito -> %d\n", del->client, del->cart);
-  printBuyersList(list);
+  // del = removeBuyer(list, 3);
+  // printf("Eliminado: Cliente -> %d, Carrito -> %d\n", del->client, del->cart);
+  // printBuyersList(list);
 
-  del = removeBuyer(list, 7);
-  //printf("Eliminado: Cliente -> %d, Carrito -> %d\n", del->client, del->cart);
+  // insertAfter(list, 4, 5);
+  // insertAfter(list, 5, 6);
+  // insertAfter(list, 6, 7);
 
-  insertAfter(list, 4, 5);
-  insertAfter(list, 5, 6);
-  insertAfter(list, 6, 7);
+  // printBuyersList(list);
 
-  printBuyersList(list);
+  queue = (PaymentQueue*)malloc(sizeof(PaymentQueue));
+  enqueuePaymentQueue(queue, createBuyersNode(1, 2));
+  enqueuePaymentQueue(queue, createBuyersNode(2, 3));
+  enqueuePaymentQueue(queue, createBuyersNode(3, 4));
+  printPaymentQueue(queue);
+  BuyersNode* del = dequeuePaymentQueue(queue);
+  printf("Eliminado, cliente -> %d, carrito -> %d\n", del->client, del->cart);
+  enqueuePaymentQueue(queue, createBuyersNode(4, 5));
+  printPaymentQueue(queue);
+
+  del = dequeuePaymentQueue(queue);
+  printf("Eliminado, cliente -> %d, carrito -> %d\n", del->client, del->cart);
+
+  del = dequeuePaymentQueue(queue);
+  printf("Eliminado, cliente -> %d, carrito -> %d\n", del->client, del->cart);
+
+
+  printPaymentQueue(queue);
+  del = dequeuePaymentQueue(queue);
+  del = dequeuePaymentQueue(queue);
+  del = dequeuePaymentQueue(queue);
+
+  printPaymentQueue(queue);
+
+  enqueuePaymentQueue(queue, createBuyersNode(5, 10));
+  enqueuePaymentQueue(queue, createBuyersNode(6, 12));
+  printPaymentQueue(queue);
 
   return 0;
 }
