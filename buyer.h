@@ -19,7 +19,7 @@ typedef struct BuyersNode {
 // Lista circular de compras
 typedef struct BuyersList {
   BuyersNode* root;
-  int buyersCount;
+  int count;
 } BuyersList;
 
 // ---------------------------------------- Cola de pagos
@@ -31,6 +31,8 @@ typedef struct PaymentQueue {
 } PaymentQueue;
 
 // Definicion de funciones para lista circular simplemente enlazada de compras
+BuyersList* initBuyersList(int count, int cartCount);
+
 BuyersNode* createBuyersNode(Client client, Cart cart);
 
 void insertAfter(BuyersList* list, Client client, Cart cart);
@@ -40,6 +42,8 @@ BuyersNode* removeBuyer(BuyersList* list, Client client);
 void printBuyersList(BuyersList* list);
 
 // Definicion de funciones para cola de pagos
+PaymentQueue* initPaymentQueue(int count);
+
 void enqueuePaymentQueue(PaymentQueue* queue, BuyersNode* node);
 
 BuyersNode* dequeuePaymentQueue(PaymentQueue* queue);

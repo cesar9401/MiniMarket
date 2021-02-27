@@ -18,10 +18,12 @@ typedef struct CartNode {
 typedef struct CartStack {
   CartNode* root;
   int size;
-  int actualNode;
+  int count;
 } CartStack;
 
 // Definicion de funciones
+CartStack* initCartStack(int size, int n, int count);
+
 CartNode* createCartNode(Cart n);
 
 void push(CartStack* stack, Cart n);

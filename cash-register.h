@@ -28,6 +28,8 @@ typedef struct RegisterList {
   int count;
 } RegisterList;
 
+RegisterList* initRegisterList(int count);
+
 RegisterNode* createRegisterNode(Register id);
 
 void insertAfterRegisterList(RegisterList* list, Register id);

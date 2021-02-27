@@ -2,6 +2,20 @@
 #include <stdlib.h>
 #include "client.h"
 
+// inicializar cola de espera de carritos
+WaitingQueue* initWaitinQueue(int n, int count) {
+  WaitingQueue* queue = (WaitingQueue*)malloc(sizeof(WaitingQueue));
+  queue->top = NULL;
+  queue->bottom = NULL;
+  queue->count = 0;
+
+  for(int i = count; i < count + n; i++) {
+    enqueueWaitingQueue(queue, i);
+  }
+
+  return queue;
+}
+
 // Crear nuevo nodo de tipo WaitingNode
 WaitingNode* createWaitingNodeQueue(Client client) {
   WaitingNode* tmp = (WaitingNode*)malloc(sizeof(WaitingNode));
@@ -20,7 +34,7 @@ void enqueueWaitingQueue(WaitingQueue* queue, Client client) {
     queue->bottom->next = tmp;
     queue->bottom = tmp;
   }
-  queue->waitingClients++;
+  queue->count++;
 }
 
 // Desencolar nodo de WaitingNode
@@ -28,7 +42,7 @@ Client dequeueWaitingQueue(WaitingQueue* queue) {
   if(queue->top) {
     WaitingNode* first = queue->top;
     queue->top = first->next;
-    queue->waitingClients--;
+    queue->count--;
 
     Client client = first->client;
 

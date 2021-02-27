@@ -2,6 +2,20 @@
 #include <stdio.h>
 #include "cart.h"
 
+// inicializar pila de carritos
+CartStack* initCartStack(int size, int n, int count) {
+  CartStack* stack = (CartStack*)malloc(sizeof(CartStack));
+  stack->root = NULL;
+  stack->count = 0;
+  stack->size = size;
+
+  for(int i = count; i < n + count; i++) {
+    push(stack, i);
+  }
+
+  return stack;
+}
+
 // Crear nuevo carrito
 CartNode* createCartNode(Cart n) {
   CartNode* tmp = (CartNode*)malloc(sizeof(CartNode));
@@ -16,7 +30,7 @@ void push(CartStack* stack, Cart n) {
   CartNode* node = createCartNode(n);
   node->next = stack->root;
   stack->root = node;
-  stack->actualNode++;
+  stack->count++;
 }
 
 // Eliminar carrito de la pila
@@ -24,7 +38,7 @@ Cart pop(CartStack* stack) {
   if(stack->root != NULL) {
     CartNode* node = stack->root;
     stack->root = node->next;
-    stack->actualNode--;
+    stack->count--;
 
     Cart id = node->id;
 

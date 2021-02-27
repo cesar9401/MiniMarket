@@ -18,11 +18,12 @@ typedef struct WaitingNode {
 typedef struct WaitingQueue {
   WaitingNode* top;
   WaitingNode* bottom;
-  int waitingClients;
-  int size;
+  int count;
 } WaitingQueue;
 
 // Definicion de funciones
+WaitingQueue* initWaitinQueue(int n, int count);
+
 WaitingNode* createWaitingNodeQueue(Client client);
 
 void enqueueWaitingQueue(WaitingQueue* queue, Client client);

@@ -3,6 +3,19 @@
 #include "buyer.h"
 
 // ---------------------------------------- Lista circular simplemente enlazada de compras
+// inicializar lista circular de compras
+BuyersList* initBuyersList(int count, int cartCount) {
+  BuyersList* list = (BuyersList*)malloc(sizeof(BuyersList));
+  list->root = NULL;
+  list->count = 0;
+
+  for(int i = cartCount; i < count + cartCount; i++) {
+    insertAfter(list, i, i);
+  }
+
+  return list;
+}
+
 // Crear nuevo nodo
 BuyersNode* createBuyersNode(Client client, Cart cart) {
   BuyersNode* tmp = (BuyersNode*)malloc(sizeof(BuyersNode));
@@ -28,7 +41,7 @@ void insertAfter(BuyersList* list, Client client, Cart cart) {
     node->next = tmp;
     tmp->next = list->root;
   }
-  list->buyersCount++;
+  list->count++;
 }
 
 // Eliminar cliente de la lista segun id
@@ -44,18 +57,21 @@ BuyersNode* removeBuyer(BuyersList* list, Client client) {
         list->root = node->next;
         tmp->next = list->root;
         node->next = NULL;
-        return node;
       } else {
         list->root = NULL;
         node->next = NULL;
-        return node;
       }
+
+      list->count--;
+      return node;
+
     } else {
       while(node->next != list->root) {
         if(node->next->client == client) {
           BuyersNode* tmp = node->next;
           node->next = tmp->next;
           tmp->next = NULL;
+          list->count--;
           return tmp;
         }
         node = node->next;
@@ -85,6 +101,21 @@ void printBuyersList(BuyersList* list) {
 }
 
 // ---------------------------------------- Cola de pagos
+// Inicializar cola de pagos
+PaymentQueue* initPaymentQueue(int count) {
+  PaymentQueue* queue = (PaymentQueue*)malloc(sizeof(PaymentQueue));
+  queue->top = NULL;
+  queue->bottom = NULL;
+  queue->count = 0;
+
+  for(int i = 0; i < count; i++) {
+    BuyersNode* node = createBuyersNode(i, i);
+    enqueuePaymentQueue(queue, node);
+  }
+
+  return queue;
+}
+
 // Encolar nuevo comprador a la cola de pagos
 void enqueuePaymentQueue(PaymentQueue* queue, BuyersNode* node) {
   if(!queue->top) {
