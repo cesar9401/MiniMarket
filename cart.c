@@ -54,7 +54,7 @@ Cart pop(CartStack* stack) {
 void printCartStack(CartStack* stack) {
   if(stack->root != NULL) {
     CartNode* node = stack->root;
-    printf("Valores en pila:\n");
+    printf("Carritos en pila:\n");
     do {
       printf("Carreta no: %d\n", node->id);
       node = node->next;

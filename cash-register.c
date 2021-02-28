@@ -43,6 +43,20 @@ void insertAfterRegisterList(RegisterList* list, Register id) {
   list->count++;
 }
 
+// Verificar si alguna caja registradora esta disponible
+Register isAvailable(RegisterList* list) {
+  if(list->top) {
+    RegisterNode* node = list->top;
+    while(node) {
+      if(!node->buyer) {
+        return node->id;
+      }
+      node =  node->next;
+    }
+  }
+  return -1;
+}
+
 // Imprimir listado de cajas registradoras
 void printRegisterList(RegisterList* list) {
   if(list->top) {

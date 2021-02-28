@@ -76,10 +76,10 @@ BuyersNode* removeBuyer(BuyersList* list, Client client) {
         }
         node = node->next;
       }
-      printf("Cliente %d, no encontrado.\n", client);
+      //printf("Cliente %d, no encontrado.\n", client);
     }
   } else {
-    printf("Listado vacio\n");
+    //printf("Listado vacio\n");
   }
 
   return NULL;
@@ -98,6 +98,7 @@ void printBuyersList(BuyersList* list) {
     }while(node != list->root);
     //printf("Cliente ->  %d, Carrito -> %d\n", node->client, node->cart);
   }
+  printf("\n");
 }
 
 // ---------------------------------------- Cola de pagos

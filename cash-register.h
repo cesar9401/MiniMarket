@@ -34,6 +34,8 @@ RegisterNode* createRegisterNode(Register id);
 
 void insertAfterRegisterList(RegisterList* list, Register id);
 
+Register isAvailable(RegisterList* list);
+
 void printRegisterList(RegisterList* list);
 
 #endif
