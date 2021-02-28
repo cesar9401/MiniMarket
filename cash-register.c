@@ -8,6 +8,7 @@ RegisterList* initRegisterList(int count) {
   list->top = NULL;
   list->bottom = NULL;
   list->count = 0;
+  list->busy = 0;
 
   for(int i = 0; i < count; i++) {
     insertAfterRegisterList(list, i);
@@ -78,7 +79,6 @@ BuyersNode* finishPaying(RegisterList* list, Register id) {
   } else {
     printf("No hay cajas en MiniMarket\n");
   }
-  printf("\n");
   return NULL;
 }
 

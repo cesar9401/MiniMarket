@@ -26,6 +26,7 @@ typedef struct RegisterList {
   RegisterNode* top;
   RegisterNode* bottom;
   int count;
+  int busy;
 } RegisterList;
 
 RegisterList* initRegisterList(int count);
