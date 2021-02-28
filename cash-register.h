@@ -34,7 +34,9 @@ RegisterNode* createRegisterNode(Register id);
 
 void insertAfterRegisterList(RegisterList* list, Register id);
 
-Register isAvailable(RegisterList* list);
+RegisterNode* availableRegisterNode(RegisterList* list);
+
+BuyersNode* finishPaying(RegisterList* list, Register id);
 
 void printRegisterList(RegisterList* list);
 

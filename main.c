@@ -26,6 +26,7 @@ void printStatus();
 void takeCart();
 void goToPaymentQueue();
 void goToCashRegister();
+void exitSystem();
 
 int main() {
   srand(time(NULL));
@@ -40,7 +41,22 @@ int main() {
   goToPaymentQueue();
   goToPaymentQueue();
 
+  printStatus();
+
   goToCashRegister();
+  goToCashRegister();
+  goToCashRegister();
+  goToCashRegister();
+  goToCashRegister();
+  goToCashRegister();
+  goToCashRegister();
+  goToCashRegister();
+
+  printStatus();
+
+  exitSystem();
+  exitSystem();
+
   printStatus();
 
   return 0;
@@ -52,7 +68,7 @@ void setElements() {
   a = 10;
   b = 20;
   c = 25;
-  d = 40;
+  d = 30;
 
   // printf("Defina el numero de cajas para pagos: ");
   // scanf("%d", &registerCount);
@@ -145,7 +161,7 @@ void goToPaymentQueue() {
     BuyersNode* node = removeBuyer(buyersList, n);
     if(node) {
       enqueuePaymentQueue(paymentQueue, node);
-      printf("Se ha agregado a cliente -> %d con carrito %d a cola de pagos\n", node->client, node->cart);
+      printf("Se ha agregado a cliente -> %d con carrito -> %d a cola de pagos\n", node->client, node->cart);
     } else {
       printf("No se ha retidaro ningun cliente de la lista de compradores\n");
     }
@@ -158,11 +174,15 @@ void goToPaymentQueue() {
 // Pasar a caja registradora
 void goToCashRegister() {
   if(paymentQueue->top) {
-    Register id = isAvailable(registerList);
-    if(id != -1) {
-      printf("Caja disponible: %d\n", id);
+    RegisterNode* registerNode = availableRegisterNode(registerList);
+    if(registerNode) {
+      //printf("Caja disponible: %d\n", registerNode->id);
+      BuyersNode* buyer = dequeuePaymentQueue(paymentQueue);
+      registerNode->buyer = buyer;
+      registerNode->status = "Ocupado";
+      printf("Cliente -> %d con carrito -> %d ha pasado a caja -> %d\n", registerNode->buyer->client, registerNode->buyer->cart, registerNode->id);
     } else {
-      printf("No hay cajas registradoras disponibles");
+      printf("No hay cajas registradoras disponibles\n");
     }
   } else {
     printf("La cola de pagos esta vacia\n");
@@ -170,3 +190,29 @@ void goToCashRegister() {
   printf("\n");
 }
 
+// Terminar de pagar y salida del sistema
+void exitSystem() {
+  Register id = rand() % registerCount;
+  printf("id -> %d\n", id);
+  BuyersNode* node = finishPaying(registerList, id);
+  if(node) {
+    Cart cart = node->cart;
+    int n = rand() % 2;
+    if(n) {
+      if(stack1->count < stack1->size) {
+        push(stack1, cart);
+      } else {
+        push(stack2, cart);
+      }
+    } else {
+      if(stack2->count < stack2->size) {
+        push(stack2, cart);
+      } else {
+        push(stack1, cart);
+      }
+    }
+
+    printf("El cliente -> %d sale del sistema, libera carrito -> %d y caja -> %d\n", node->client, node->cart, id);
+    free(node);
+  }
+}

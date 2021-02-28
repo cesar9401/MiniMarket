@@ -44,18 +44,54 @@ void insertAfterRegisterList(RegisterList* list, Register id) {
 }
 
 // Verificar si alguna caja registradora esta disponible
-Register isAvailable(RegisterList* list) {
+RegisterNode* availableRegisterNode(RegisterList* list) {
   if(list->top) {
     RegisterNode* node = list->top;
     while(node) {
       if(!node->buyer) {
-        return node->id;
+        return node;
       }
       node =  node->next;
     }
   }
-  return -1;
+  return NULL;
 }
+
+// Liberar cliente del sistema
+BuyersNode* finishPaying(RegisterList* list, Register id) {
+  if(list->top) {
+    RegisterNode* tmp = list->top;
+    while(tmp) {
+      if(tmp->id == id) {
+        if(tmp->buyer) {
+          BuyersNode* node = tmp->buyer;
+          tmp->buyer = NULL;
+          tmp->time++;
+          tmp->status = "Libre";
+
+          return node;
+        }
+      }
+      tmp = tmp->next;
+    }
+
+  } else {
+    printf("No hay cajas en MiniMarket\n");
+  }
+  printf("\n");
+  return NULL;
+}
+
+// Mover a cliente a caja registradora segun id
+// void insertBuyerInRegisterNode(RegisterList* list, Register id, BuyersNode* node) {
+//   if(list->top) {
+//     RegisterNode* registerNode = list->top;
+//     while(registerNode->id != id) {
+//       registerNode = registerNode->next;
+//     }
+//     registerNode->buyer = node;
+//   }
+// }
 
 // Imprimir listado de cajas registradoras
 void printRegisterList(RegisterList* list) {
@@ -63,7 +99,11 @@ void printRegisterList(RegisterList* list) {
     RegisterNode* node = list->top;
     printf("Listado de cajas\n");
     do {
-      printf("Caja -> %d, time -> %d, estado ->%s\n", node->id, node->time, node->status);
+      printf("Caja -> %d, time -> %d, estado -> %s", node->id, node->time, node->status);
+      if(node->buyer) {
+        printf(", cliente -> %d, carrito %d", node->buyer->client, node->buyer->cart);
+      }
+      printf("\n");
       node = node->next;
     } while(node);
   } else {
