@@ -8,6 +8,9 @@
 #include "buyer.h"
 #include "cash-register.h"
 
+// Archivo para escribir dot
+FILE* file;
+
 // Numero de carritos y cajas
 int cartsCount;
 int registerCount;
@@ -29,12 +32,14 @@ void takeCart();
 void goToPaymentQueue();
 void goToCashRegister();
 void exitSystem();
+void writeDot();
 
 int main() {
   // Write your code here
   srand(time(NULL));
 
-  action();
+  //action();
+  writeDot(1);
 
   return 0;
 }
@@ -227,4 +232,14 @@ void exitSystem() {
     //goToCashRegister();
     free(node);
   }
+}
+
+// Escribir archivo .dot
+void writeDot(int turn) {
+  file = fopen("diagram.dot", "w");
+  fprintf(file, "digraph diagram {\n");
+  fprintf(file, "label = \"Turno %d\";\n", turn);
+  fprintf(file, "rankdir = RL;\n");
+  fprintf(file, "}\n");
+  fclose(file);
 }
