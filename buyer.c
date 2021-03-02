@@ -85,6 +85,35 @@ BuyersNode* removeBuyer(BuyersList* list, Client client) {
   return NULL;
 }
 
+// Imprimir informacion de compradores en archivo .dot
+void printBuyersListInDot(FILE* file, BuyersList* list) {
+  fprintf(file, "subgraph cluster_3 {\n");
+  fprintf(file, "label = \"Compradores\";\n\n");
+
+  if(list->root) {
+    BuyersNode* node = list->root;
+    do {
+      fprintf(file, "comprador%d[label=\"Cliente %d\\nCarrito %d\"];\n", node->client, node->client, node->cart);
+      node = node->next;
+    } while(node != list->root);
+    fprintf(file, "\n");
+    node = list->root;
+    do {
+      if(node->next != list->root) {
+        fprintf(file, "comprador%d -> comprador%d;\n", node->client, node->next->client);
+      } else {
+        fprintf(file, "comprador%d -> comprador%d;\n", node->client, node->next->client);
+      }
+
+      node = node->next;
+    } while(node != list->root);
+  } else {
+    fprintf(file, "comprador[label=\"Lista Vacia\"];\n");
+  }
+
+  fprintf(file, "}\n\n");
+}
+
 // Imprimir listado de compradores
 void printBuyersList(BuyersList* list) {
   if(!list->root) {

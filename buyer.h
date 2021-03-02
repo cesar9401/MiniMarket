@@ -39,6 +39,8 @@ void insertAfter(BuyersList* list, Client client, Cart cart);
 
 BuyersNode* removeBuyer(BuyersList* list, Client client);
 
+void printBuyersListInDot(FILE* file, BuyersList* list);
+
 void printBuyersList(BuyersList* list);
 
 // Definicion de funciones para cola de pagos

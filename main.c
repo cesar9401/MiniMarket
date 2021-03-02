@@ -250,7 +250,7 @@ void writeDot(int turn) {
   printWaitingQueueInDot(file, waitingQueue);
   printCartStackInDot(file, stack1, 1);
   printCartStackInDot(file, stack2, 2);
-
+  printBuyersListInDot(file, buyersList);
 
   fprintf(file, "}\n");
   fclose(file);
