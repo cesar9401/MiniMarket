@@ -30,6 +30,8 @@ void enqueueWaitingQueue(WaitingQueue* queue, Client client);
 
 Client dequeueWaitingQueue(WaitingQueue* queue);
 
+void printWaitingQueueInDot(FILE* file, WaitingQueue* queue);
+
 void printWaitingQueue(WaitingQueue* queue);
 
 #endif

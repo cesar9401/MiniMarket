@@ -39,6 +39,8 @@ int main() {
   srand(time(NULL));
 
   //action();
+  setElements();
+  //action();
   writeDot(1);
 
   return 0;
@@ -239,7 +241,17 @@ void writeDot(int turn) {
   file = fopen("diagram.dot", "w");
   fprintf(file, "digraph diagram {\n");
   fprintf(file, "label = \"Turno %d\";\n", turn);
-  fprintf(file, "rankdir = RL;\n");
+  fprintf(file, "rankdir = LR;\n");
+  fprintf(file, "node [\n");
+  fprintf(file, "shape = \"box\";\n");
+  fprintf(file, "]\n\n");
+
+  // insertar informacion de estructuras aqui
+  printWaitingQueueInDot(file, waitingQueue);
+  printCartStackInDot(file, stack1, 1);
+  printCartStackInDot(file, stack2, 2);
+
+
   fprintf(file, "}\n");
   fclose(file);
 }

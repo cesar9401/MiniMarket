@@ -3,3 +3,7 @@
 
 #ignorar sh
 *.sh
+
+# ignorar .dot y .png
+*.dot
+*.png

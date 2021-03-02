@@ -58,6 +58,28 @@ Client dequeueWaitingQueue(WaitingQueue* queue) {
   return -1;
 }
 
+void printWaitingQueueInDot(FILE* file, WaitingQueue* queue) {
+  fprintf(file, "subgraph cluster_0 {\n");
+  fprintf(file, "label = \"Cola de espera\";\n\n");
+  if(queue->top) {
+    WaitingNode* node = queue->top;
+    do {
+      fprintf(file, "cliente%d[label =\"Cliente %d\"];\n", node->client, node->client);
+      node = node->next;
+    } while(node);
+    fprintf(file, "\n");
+    node = queue->top;
+    while(node->next) {
+      fprintf(file, "cliente%d -> cliente%d;\n", node->client, node->next->client);
+      node = node->next;
+    }
+  } else {
+      fprintf(file, "cliente[label =\"Cola vacia\"];\n");
+  }
+
+  fprintf(file, "}\n\n");
+}
+
 // Imprimir cola de espera
 void printWaitingQueue(WaitingQueue* queue) {
   if(queue->top) {

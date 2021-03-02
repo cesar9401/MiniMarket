@@ -50,6 +50,55 @@ Cart pop(CartStack* stack) {
   return -1;
 }
 
+// Agregar informacion de los carritos en archivo .dot
+void printCartStackInDot(FILE* file, CartStack* stack, int n) {
+  fprintf(file, "subgraph cluster_%d {\n", n);
+  fprintf(file, "label = \"Carritos %d\";\n\n", n);
+
+  if(stack->root) {
+    CartNode* node = stack->root;
+    // shape = record
+    fprintf(file, "\"carrito%d\" [\n", n);
+    fprintf(file, "label = \"");
+    // shape = record
+
+    do {
+      // shape = record
+      fprintf(file, "%d", node->id);
+      if(node->next) {
+        fprintf(file, "|", node->id);
+      }
+      // shape = record
+
+      //fprintf(file, "carrito%d[label=\"%d\"];\n", node->id, node->id);
+      node = node->next;
+    } while(node);
+    // shape = record
+    fprintf(file, "\"\n");
+    fprintf(file, "shape = \"record\"\n");
+    fprintf(file, "];\n");
+    // shape = record
+
+    fprintf(file, "\n");
+    node = stack->root;
+    // while(node->next) {
+    //   fprintf(file, "carrito%d -> carrito%d;\n", node->id, node->next->id);
+    //   node = node->next;
+    // }
+  } else {
+    // shape = record
+    fprintf(file, "\"carrito%d\" [\n", n);
+    fprintf(file, "label = \"Pila Vacia\"\n");
+    fprintf(file, "shape = \"record\"\n");
+    fprintf(file, "];\n");
+    // shape = record
+
+    //fprintf(file, "carrito%d[label =\"Pila vacia\"];\n", n);
+  }
+
+  fprintf(file, "}\n\n");
+}
+
 // Imprimir carritos en la pila
 void printCartStack(CartStack* stack) {
   if(stack->root != NULL) {

@@ -30,6 +30,8 @@ void push(CartStack* stack, Cart n);
 
 Cart pop(CartStack* stack);
 
+void printCartStackInDot(FILE* file, CartStack* stack, int n);
+
 void printCartStack(CartStack* stack);
 
 #endif
