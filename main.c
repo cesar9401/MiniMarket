@@ -251,6 +251,8 @@ void writeDot(int turn) {
   printCartStackInDot(file, stack1, 1);
   printCartStackInDot(file, stack2, 2);
   printBuyersListInDot(file, buyersList);
+  printPaymentQueueInDot(file, paymentQueue);
+  printRegisterListInDot(file, registerList);
 
   fprintf(file, "}\n");
   fclose(file);

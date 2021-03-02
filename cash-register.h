@@ -39,6 +39,8 @@ RegisterNode* availableRegisterNode(RegisterList* list);
 
 BuyersNode* finishPaying(RegisterList* list, Register id);
 
+void printRegisterListInDot(FILE* file, RegisterList* list);
+
 void printRegisterList(RegisterList* list);
 
 #endif

@@ -50,6 +50,8 @@ void enqueuePaymentQueue(PaymentQueue* queue, BuyersNode* node);
 
 BuyersNode* dequeuePaymentQueue(PaymentQueue* queue);
 
+void printPaymentQueueInDot(FILE* file, PaymentQueue* queue);
+
 void printPaymentQueue(PaymentQueue* queue);
 
 #endif

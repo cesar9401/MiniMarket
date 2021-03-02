@@ -174,6 +174,29 @@ BuyersNode* dequeuePaymentQueue(PaymentQueue* queue) {
   return NULL;
 }
 
+// Imprimir cola de pagadores en archivo .dot
+void printPaymentQueueInDot(FILE* file, PaymentQueue* queue) {
+  fprintf(file, "subgraph cluster_4 {\n");
+  fprintf(file, "label = \"Cola de Pagos\";\n\n");
+
+  if(queue->top) {
+    BuyersNode* node = queue->top;
+    do {
+      fprintf(file, "pago%d[label=\"Cliente %d\\nCarrito %d\"];\n", node->client, node->client, node->cart);
+      node = node->next;
+    } while(node);
+    node = queue->top;
+    while(node->next) {
+      fprintf(file, "pago%d -> pago%d;\n", node->client, node->next->client);
+      node = node->next;
+    }
+  } else {
+    fprintf(file, "pago[label=\"Cola Vacia\"];\n");
+  }
+
+  fprintf(file, "}\n\n");
+}
+
 // Imprimir cola de pagos
 void printPaymentQueue(PaymentQueue* queue) {
   if(queue->top) {

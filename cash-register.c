@@ -93,6 +93,37 @@ BuyersNode* finishPaying(RegisterList* list, Register id) {
 //   }
 // }
 
+// Imprimir informacion de listado de cajas registradoras en archivo .dot
+void printRegisterListInDot(FILE* file, RegisterList* list) {
+  fprintf(file, "subgraph cluster_5 {\n");
+  fprintf(file, "label = \"Cajas\";\n");
+  fprintf(file, "node [\n");
+  fprintf(file, "shape = \"ellipse\";\n");
+  fprintf(file, "]\n\n");
+
+  if(list->top) {
+    RegisterNode* node = list->top;
+    do {
+      fprintf(file, "caja%d[label=\"Caja %d\\n%d Turnos\\n%s", node->id, node->id, node->time, node->status);
+      if(node->buyer) {
+        fprintf(file, "\\nCliente %d\\nCarrito %d", node->buyer->client, node->buyer->cart);
+      }
+      fprintf(file, "\"];\n");
+      node = node->next;
+    } while(node);
+    node = list->top;
+    while(node->next) {
+      fprintf(file, "caja%d -> caja%d;\n", node->id, node->next->id);
+      node = node->next;
+      fprintf(file, "caja%d -> caja%d;\n", node->id, node->previous->id);
+    }
+  } else {
+    fprintf(file, "caja%[label=\"Sin Cajas\"");
+  }
+
+  fprintf(file, "}\n\n");
+}
+
 // Imprimir listado de cajas registradoras
 void printRegisterList(RegisterList* list) {
   if(list->top) {
