@@ -3,10 +3,10 @@
 #include <stdio.h>
 #include <time.h>
 
-#include "cart.h"
-#include "client.h"
-#include "buyer.h"
-#include "cash-register.h"
+#include "lib/cart.h"
+#include "lib/client.h"
+#include "lib/buyer.h"
+#include "lib/cash-register.h"
 
 // Archivo para escribir dot
 FILE* file;
