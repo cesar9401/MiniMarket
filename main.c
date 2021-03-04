@@ -10,7 +10,7 @@
 #include "lib/cash-register.h"
 
 // Graphviz
-#include <graphviz/gvc.h>
+#include "graphviz/gvc.h"
 
 // Archivo para escribir dot
 FILE* file;
