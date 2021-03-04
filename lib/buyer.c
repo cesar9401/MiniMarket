@@ -185,7 +185,10 @@ void printPaymentQueueInDot(FILE* file, PaymentQueue* queue) {
       fprintf(file, "pago%d[label=\"Cliente %d\\nCarrito %d\"];\n", node->client, node->client, node->cart);
       node = node->next;
     } while(node);
+
+    fprintf(file, "\n");
     node = queue->top;
+
     while(node->next) {
       fprintf(file, "pago%d -> pago%d;\n", node->client, node->next->client);
       node = node->next;

@@ -106,12 +106,15 @@ void printRegisterListInDot(FILE* file, RegisterList* list) {
     do {
       fprintf(file, "caja%d[label=\"Caja %d\\n%d Turnos\\n%s", node->id, node->id, node->time, node->status);
       if(node->buyer) {
-        fprintf(file, "\\nCliente %d\\nCarrito %d", node->buyer->client, node->buyer->cart);
+        fprintf(file, "\\n\\nCliente %d\\nCarrito %d", node->buyer->client, node->buyer->cart);
       }
       fprintf(file, "\"];\n");
       node = node->next;
     } while(node);
+
+    fprintf(file, "\n");
     node = list->top;
+
     while(node->next) {
       fprintf(file, "caja%d -> caja%d;\n", node->id, node->next->id);
       node = node->next;

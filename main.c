@@ -3,10 +3,14 @@
 #include <stdio.h>
 #include <time.h>
 
+// Mis librerias
 #include "lib/cart.h"
 #include "lib/client.h"
 #include "lib/buyer.h"
 #include "lib/cash-register.h"
+
+// Graphviz
+#include <graphviz/gvc.h>
 
 // Archivo para escribir dot
 FILE* file;
@@ -25,7 +29,7 @@ PaymentQueue* paymentQueue;
 RegisterList* registerList;
 
 // Definir funciones
-void action();
+void menu();
 void setElements();
 void printStatus();
 void takeCart();
@@ -33,34 +37,74 @@ void goToPaymentQueue();
 void goToCashRegister();
 void exitSystem();
 void writeDot();
+void createPngFromDot();
+void startSimulation(int turn);
 
 int main() {
   // Write your code here
   srand(time(NULL));
 
-  //action();
-  setElements();
-  //action();
-  writeDot(1);
+  menu();
 
   return 0;
 }
 
-void action() {
-  int turn = 1;
+// menu principal
+void menu() {
+  int turn = 0;
+  int opcion;
 
   setElements();
 
-  printStatus();
+  do {
+    printf("\nMiniMarket - Turno %d\n", turn);
+    printf("1 - Ver diagrama del turno\n");
+    printf("2 - Siguiente turno\n");
+    printf("3 - Ir al final de la simulacion\n");
+    printf("4 - Salir\n");
+    printf("Opcion: ");
+    scanf("%d", &opcion);
 
-  while(waitingQueue->top || buyersList->root || paymentQueue->top || registerList->busy > 0) {
-    printf("------------------------ Turno %d -----------------------\n", turn);
+    switch (opcion) {
+    case 1:
+      writeDot(turn);
+      break;
+
+    case 2:
+      turn++;
+      startSimulation(turn);
+      break;
+
+    case 3:
+      while(waitingQueue->top || buyersList->root || paymentQueue->top || registerList->busy > 0) {
+        turn++;
+        startSimulation(turn);
+      }
+      break;
+
+    case 4:
+      printf("\nAdios\n");
+      break;
+
+    default:
+      printf("\nOpcion no valida\n");
+      break;
+    }
+  }while(opcion != 4);
+}
+
+// Ejecuta el turno actual de la simulacion
+void startSimulation(int turn) {
+  if(waitingQueue->top || buyersList->root || paymentQueue->top || registerList->busy > 0) {
+    printf("\n------------------------ Turno %d -----------------------\n", turn);
 
     while((stack1->root || stack2->root) && waitingQueue->top) {
       takeCart();
     }
 
-    goToPaymentQueue();
+    for(int i = 0; i < 3; i++) {
+      goToPaymentQueue();
+    }
 
     for(int i = 0; i < registerCount; i++) {
       exitSystem();
@@ -69,39 +113,40 @@ void action() {
     while(registerList->busy < registerList->count && paymentQueue->top) {
       goToCashRegister();
     }
-
-    // printStatus();
-
-    turn++;
+  } else {
+    printf("\nLa simulacion ha terminado\n");
   }
-
-  printStatus();
-
 }
 
+// Iniializar los elementos de miniMarket
 void setElements() {
   int a, b, c, d, count, n, p;
-  registerCount = 6;
-  a = 10;
-  b = 20;
-  c = 25;
-  d = 30;
+  // registerCount = 6;
+  // a = 10;
+  // b = 20;
+  // c = 25;
+  // d = 30;
 
-  // printf("Defina el numero de cajas para pagos: ");
-  // scanf("%d", &registerCount);
+  printf("Defina el numero de cajas para pagos: ");
+  scanf("%d", &registerCount);
 
-  // printf("Defina la cantidad de clientes en la cola de pagos: ");
-  // scanf("%d", &a);
+  printf("Defina la cantidad de clientes en la cola de pagos: ");
+  scanf("%d", &a);
 
-  // printf("Defina la cantidad de clientes comprando: ");
-  // scanf("%d", &b);
+  printf("Defina la cantidad de clientes comprando: ");
+  scanf("%d", &b);
 
-  // /* Se deben tomar en cuenta los carritos con los clientes que estan comprando y los clientes en la cola de pagos */
-  // printf("Defina la cantidad de carretas por pila: ");
-  // scanf("%d", &c);
+  /* Se deben tomar en cuenta los carritos con los clientes que estan comprando y los clientes en la cola de pagos */
+  do {
+    printf("Defina la cantidad de carretas por pila: ");
+    scanf("%d", &c);
+    if(2*c < a + b) {
+      printf("La cantidad de carritos totales, debe ser mayor o igual a la cantidad de clientes en la cola de pagos y clientes comprando\n");
+    }
+  }while(2*c < a + b);
 
-  // printf("Defina la cantidad de clientes en la cola de espera de carretas: ");
-  // scanf("%d", &d);
+  printf("Defina la cantidad de clientes en la cola de espera de carretas: ");
+  scanf("%d", &d);
 
   cartsCount = 2 * c;
 
@@ -110,13 +155,13 @@ void setElements() {
   paymentQueue = initPaymentQueue(a);
   buyersList = initBuyersList(b, a);
 
-  count = a + b; // 15
+  count = a + b;
   if(count % 2 == 0) {
     n = c - (a + b) / 2;
     p = n;
   } else {
-    n = c - (a + b - 1) / 2;// 13
-    p = c - (a + b + 1) / 2;// 12
+    n = c - (a + b - 1) / 2;
+    p = c - (a + b + 1) / 2;
   }
 
   stack1 = initCartStack(c, n, count);
@@ -126,6 +171,7 @@ void setElements() {
   clients = a + b + d;
 }
 
+// Imprimir en consola el estado actual de los componentes de miniMarket
 void printStatus() {
   printf("Cajas registradoras: %d\n", registerList->count);
   printRegisterList(registerList);
@@ -256,4 +302,34 @@ void writeDot(int turn) {
 
   fprintf(file, "}\n");
   fclose(file);
+
+  // crear png
+  createPngFromDot();
+
+  printf("\n\nEl diagrama del turno %d ha sido generado\n\n", turn);
+}
+
+// Crear archivo .png desde archivo .dot
+void createPngFromDot() {
+  GVC_t* gvc;
+  graph_t* g;
+  FILE* file;
+
+  gvc = gvContext();
+
+  file = fopen("diagram.dot", "r");
+
+  g = agread(file, 0);
+
+  gvLayout(gvc, g, "dot");
+
+  //gvRender(gvc, g, "plain", stdout);
+  //gvRender(gvc, g, "png", file);
+  gvRenderFilename(gvc, g, "png", "diagram.png");
+
+  gvFreeLayout(gvc, g);
+
+  agclose(g);
+
+  gvFreeContext(gvc);
 }
